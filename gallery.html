@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ev Fotoğraf Galerisi</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        .container {
+            max-width: 1000px;
+            margin: auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .filters button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007BFF;
+            color: white;
+            cursor: pointer;
+        }
+        .filters button.active {
+            background-color: #0056b3;
+        }
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+        }
+        .gallery-item {
+            position: relative;
+            cursor: pointer;
+        }
+        .gallery-item img {
+            width: 100%;
+            border-radius: 5px;
+            display: block;
+        }
+        .hidden {
+            display: none !important;
+        }
+        .back-link {
+            text-align: center;
+            margin: 30px 0;
+        }
+        .back-link a {
+            text-decoration: none;
+            color: #007BFF;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        .back-link i {
+            margin-right: 8px;
+        }
+
+        /* Lightbox */
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        .lightbox img {
+            max-width: 90%;
+            max-height: 80vh;
+            border-radius: 8px;
+        }
+        .lightbox:target {
+            display: flex;
+        }
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 2em;
+            text-decoration: none;
+        }
+		.gallery-link {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .gallery-link a {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: #007BFF;
+            font-size: 1.2em;
+            font-weight: bold;
+            border: 2px solid #007BFF;
+            padding: 10px 20px;
+            border-radius: 8px;
+        }
+        .gallery-link a:hover {
+            background-color: #007BFF;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+	<div class="lang-switch" style="display: flex;justify-content: space-between;">
+		<a href="#" onclick="setLang('tr')" title="Sayfayı Türkçe'ye geçir" >
+			<img src="img/flag-tr.thumb.png" alt="Sayfayı Türkçe'ye geçir" style="width:50px; height:auto; cursor:pointer;">
+		</a>
+		<a href="#" onclick="setLang('en')" title="Switch page to English" >
+			<img src="img/flag-en.thumb.png" alt="English" style="width:50px; height:auto; cursor:pointer;">
+		</a>
+    </div>
+    <h1 data-i18n="galleryTitle">Ev Fotoğraf Galerisi</h1>
+	
+    <div class="back-link">
+      <a href="index.html"><i class="fas fa-arrow-left"></i> <span data-i18n="backToHome">Ana Sayfaya Dön</span></a>
+    </div>
+     <div class="filters">
+      <button class="active" onclick="filterSelection('all')" data-i18n="filterAll">Tümü</button>
+      <button onclick="filterSelection('oda1')" data-i18n="filterRoom1">Oda 1</button>
+      <button onclick="filterSelection('oda2')" data-i18n="filterRoom2">Oda 2</button>
+      <button onclick="filterSelection('salon')" data-i18n="filterLiving">Salon</button>
+      <button onclick="filterSelection('mutfak')" data-i18n="filterKitchen">Mutfak</button>
+      <button onclick="filterSelection('balkon')" data-i18n="filterBalcony">Balkon</button>
+      <button onclick="filterSelection('banyo')" data-i18n="filterBathroom">Banyo</button>
+      <button onclick="filterSelection('floor')" data-i18n="filterFloorPlan">Kat Planı</button>
+    </div>
+
+        <div class="gallery">
+            <a href="#lightbox-img1" class="gallery-item oda1">
+                <img src="img/oda-1/img-1.png" alt="Oda 1">
+            </a>
+            <a href="#lightbox-img2" class="gallery-item oda1">
+                <img src="img/oda-2/img-1.png" alt="Oda 1">
+            </a>
+            <a href="#lightbox-img3" class="gallery-item oda2">
+                <img src="img/oda-2/img-2.png" alt="Oda 2">
+            </a>
+            <a href="#lightbox-img4" class="gallery-item salon">
+                <img src="img/oda-2/img-2.png" alt="Salon">
+            </a>
+            <a href="#lightbox-img5" class="gallery-item salon">
+                <img src="img/mutfak/img-1.png" alt="Salon">
+            </a>
+            <a href="#lightbox-img6" class="gallery-item mutfak">
+                <img src="img/wc/img-1.png" alt="Mutfak">
+            </a>
+            <a href="#lightbox-img7" class="gallery-item floor">
+                <img src="img/floorplan.png" alt="floor">
+            </a>
+            <a href="#lightbox-img8" class="gallery-item banyo">
+                <img src="https://picsum.photos/400/600" alt="Banyo">
+            </a>
+        </div>
+
+       
+    </div>
+
+    <!-- Lightboxes -->
+    <div id="lightbox-img1" class="lightbox"><a href="#" class="lightbox-close">&times;</a><img src="img/oda-1/img-1.png"></div>
+    <div id="lightbox-img2" class="lightbox"><a href="#" class="lightbox-close">&times;</a><img src="img/oda-2/img-1.png"></div>
+    <div id="lightbox-img3" class="lightbox"><a href="#" class="lightbox-close">&times;</a><img src="img/oda-2/img-2.png"></div>
+    <div id="lightbox-img4" class="lightbox"><a href="#" class="lightbox-close">&times;</a><img src="img/oda-2/img-2.png"></div>
+    <div id="lightbox-img5" class="lightbox"><a href="#" class="lightbox-close">&times;</a><img src="img/mutfak/img-1.png"></div>
+    <div id="lightbox-img6" class="lightbox"><a href="#" class="lightbox-close">&times;</a><img src="img/wc/img-1.png"></div>
+    <div id="lightbox-img7" class="lightbox"><a href="#" class="lightbox-close">&times;</a><img src="img/floorplan.png"></div>
+    <div id="lightbox-img8" class="lightbox"><a href="#" class="lightbox-close">&times;</a><img src="img-banyo.jpg"></div>
+<script>
+
+const translations = {
+      tr: {
+        pageTitle: "Ev Fotoğraf Galerisi",
+        galleryTitle: "Ev Fotoğraf Galerisi",
+        filterAll: "Tümü",
+        filterRoom1: "Oda 1",
+        filterRoom2: "Oda 2",
+        filterLiving: "Salon",
+        filterKitchen: "Mutfak",
+        filterBalcony: "Balkon",
+        filterBathroom: "Banyo",
+        filterFloorPlan: "Kat Planı",
+        backToHome: "Ana Sayfaya Dön"
+      },
+      en: {
+        pageTitle: "House Photo Gallery",
+        galleryTitle: "House Photo Gallery",
+        filterAll: "All",
+        filterRoom1: "Room 1",
+        filterRoom2: "Room 2",
+        filterLiving: "Living Room",
+        filterKitchen: "Kitchen",
+        filterBalcony: "Balcony",
+        filterBathroom: "Bathroom",
+        filterFloorPlan: "Floorplan",
+        backToHome: "Back to Home"
+      }
+    };
+
+    function setLang(lang) {
+      document.querySelectorAll("[data-i18n]").forEach(el => {
+        const key = el.getAttribute("data-i18n");
+        if (translations[lang][key]) el.innerText = translations[lang][key];
+        if (el.tagName === "TITLE") document.title = translations[lang][key];
+      });
+    }
+setLang('tr');
+</script>
+    <script>
+        function filterSelection(category) {
+            const buttons = document.querySelectorAll('.filters button');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            const items = document.querySelectorAll('.gallery-item');
+            if (category === 'all') {
+                items.forEach(item => item.classList.remove('hidden'));
+            } else {
+                items.forEach(item => {
+                    item.classList.toggle('hidden', !item.classList.contains(category));
+                });
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kiralık Ev İlanı</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f9f9f9;
+            color: #333;
+        }
+        .container {
+            max-width: 900px;
+            margin: auto;
+            padding: 20px;
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        .carousel {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        .carousel img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
+        .carousel img.active {
+            display: block;
+        }
+        .carousel-controls {
+            position: absolute;
+            width: 100%;
+            top: 50%;
+            display: flex;
+            justify-content: space-between;
+            transform: translateY(-50%);
+            padding: 0 10px;
+        }
+        .carousel-controls button {
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+        .carousel-indicators {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 6px;
+        }
+        .carousel-indicators span {
+            width: 10px;
+            height: 10px;
+            background-color: #ccc;
+            border-radius: 50%;
+            display: block;
+            cursor: pointer;
+        }
+        .carousel-indicators .active-indicator {
+            background-color: #007BFF;
+        }
+        .features ul {
+            list-style: none;
+            padding: 0;
+        }
+        .features li {
+            margin: 10px 0;
+        }
+        .features li::before {
+            content: "\f00c";
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            margin-right: 10px;
+            color: green;
+        }
+        .pricing-cards {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+        .pricing-card {
+            flex: 1 1 200px;
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 8px;
+            background: white;
+            text-align: center;
+        }
+        .pricing-card.highlight {
+            transform: scale(1.05);
+            border: 2px solid #007BFF;
+            background-color: #f0f8ff;
+        }
+        iframe {
+            width: 100%;
+            height: 300px;
+            border: none;
+        }
+        .map-link {
+            text-align: center;
+            margin-top: 10px;
+        }
+        .map-link a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+        .contact-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 30px;
+        }
+        .contact-buttons a {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background-color: #25D366;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .contact-buttons a.call {
+            background-color: #007BFF;
+        }
+        .contact-buttons i {
+            font-size: 1.2em;
+        }
+		
+		.gallery-link {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .gallery-link a {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: #007BFF;
+            font-size: 1.2em;
+            font-weight: bold;
+            border: 2px solid #007BFF;
+            padding: 10px 20px;
+            border-radius: 8px;
+        }
+        .gallery-link a:hover {
+            background-color: #007BFF;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container"> 
+	<div class="lang-switch" style="display: flex;justify-content: space-between;">
+		<a href="#" onclick="setLang('tr')" title="Sayfayı Türkçe'ye geçir" >
+			<img src="img/flag-tr.thumb.png" alt="Sayfayı Türkçe'ye geçir" style="width:50px; height:auto; cursor:pointer;">
+		</a>
+		<a href="#" onclick="setLang('en')" title="Switch page to English" >
+			<img src="img/flag-en.thumb.png" alt="English" style="width:50px; height:auto; cursor:pointer;">
+		</a>
+    </div>
+    <h1 data-i18n="title">Kiralık Daire</h1>
+		<div class="gallery-link">
+      <a href="gallery.html"><i class="fas fa-images"></i> <span data-i18n="galleryLink">Fotoğraf Galerisine Git</span></a>
+        </div>
+        <div class="carousel" id="carousel">
+            <img src="img/oda-1/img-1.png" alt="Ev Görseli 1" class="active">
+            <img src="img/oda-2/img-1.png" alt="Ev Görseli 2">
+            <img src="img/mutfak/img-1.png" alt="Ev Görseli 3">
+            <img src="img/floorplan.png" style="object-fit:contain" alt="Ev Görseli 3">
+
+            <div class="carousel-controls">
+                <button onclick="prevSlide()"><i class="fas fa-chevron-left"></i></button>
+                <button onclick="nextSlide()"><i class="fas fa-chevron-right"></i></button>
+            </div>
+
+            <div class="carousel-indicators" id="indicators"></div>
+        </div>
+
+    <h2 data-i18n="features">Özellikler</h2>
+        <div class="features">
+             <ul>
+        <li data-i18n="feature1">2 Oda + 1 Salon</li>
+        <li data-i18n="feature2">Amerikan Mutfak</li>
+        <li data-i18n="feature3">Klima</li>
+        <li data-i18n="feature4">1 Banyo/Tuvalet</li>
+        <li data-i18n="feature5">Geniş Balkon</li>
+        <li data-i18n="feature6">Site İçerisinde</li>
+        <li data-i18n="feature7">Araç Parkı Uygun</li>
+      </ul>
+        </div>
+
+        <h2 data-i18n="pricing">Ücretlendirme</h2>
+    <div class="pricing-cards">
+      <div class="pricing-card">
+        <h3 data-i18n="annual">Yıllık</h3>
+        <p>₺18.000 </p>
+      </div>
+      <div class="pricing-card highlight">
+        <h3 data-i18n="sixmonths">6 Aylık</h3>
+        <p>₺20.000 </p>
+      </div>
+      <div class="pricing-card">
+        <h3 data-i18n="threemonths">3 Aylık</h3>
+        <p>£400 </p>
+      </div>
+    </div>
+
+    <h2 data-i18n="location">Lokasyon</h2>
+        <div class="location">
+           <iframe src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d2481.2989756223496!2d33.916388999999995!3d35.129722!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMzXCsDA3JzQ3LjAiTiAzM8KwNTQnNTkuMCJF!5e1!3m2!1str!2s!4v1751371809001!5m2!1str!2s" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            <div class="map-link">
+                <a href="https://www.google.com/maps/dir/?api=1&destination=35.129722,33.916389,570" target="_blank">
+                    <i class="fas fa-map-marked-alt"></i> <span data-i18n="directions">Google Maps ile Yol Tarifi Al</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="contact-buttons">
+      <a href="tel:+905488605650" class="call"><i class="fas fa-phone"></i> <span data-i18n="call">Telefon ile Ara</span></a>
+      <a href="https://wa.me/905488605650" target="_blank"><i class="fab fa-whatsapp"></i> <span data-i18n="whatsapp">WhatsApp ile İletişim</span></a>
+        </div>
+    </div>
+<script>
+  const tr = {
+      pageTitle: "Kiralık Ev İlanı",
+      title: "Kiralık Daire",
+      galleryLink: "Fotoğraf Galerisine Git",
+      features: "Özellikler",
+      feature1: "2 Oda + 1 Salon",
+      feature2: "Amerikan Mutfak",
+      feature3: "Klima",
+      feature4: "1 Banyo",
+      feature5: "Geniş Balkonlu",
+      feature6: "Duraklara Yakın",
+      feature7: "Araç Parkı Uygun",
+      pricing: "Ücretlendirme",
+      annual: "Yıllık",
+      sixmonths: "6 Aylık (Ay başına)",
+      threemonths: "3 Aylık",
+      location: "Lokasyon",
+      directions: "Google Maps ile Yol Tarifi Al",
+      call: "Telefon ile Ara",
+      whatsapp: "WhatsApp ile İletişim"
+    };
+    const en = {
+      pageTitle: "Rental Property Listing",
+      title: "Rental Apartment",
+      galleryLink: "Go to Photo Gallery",
+      features: "Features",
+      feature1: "2 Bedrooms + 1 Living Room",
+      feature2: "Open Kitchen",
+      feature3: "Air Conditioning",
+      feature4: "1 Bathroom",
+      feature5: "With wide Balcony",
+      feature6: "Close to Bus Stops",
+      feature7: "Parking Available",
+      pricing: "Pricing",
+      annual: "Annual",
+      sixmonths: "6 Months",
+      threemonths: "3 Months",
+      location: "Location",
+      directions: "Get Directions with Google Maps",
+      call: "Call Now",
+      whatsapp: "Contact via WhatsApp"
+    };
+    function setLang(lang) {
+      const dict = lang === "tr" ? tr : en;
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (dict[key]) el.innerText = dict[key];
+        if (el.tagName === 'TITLE') document.title = dict[key];
+      });
+    }
+</script>
+    <script>
+        const images = document.querySelectorAll(".carousel img");
+        const indicatorsContainer = document.getElementById("indicators");
+        let index = 0;
+        //let interval = setInterval(nextSlide, 3000);
+
+        function showSlide(i) {
+            images.forEach((img, idx) => {
+                img.classList.toggle("active", idx === i);
+                indicatorsContainer.children[idx].classList.toggle("active-indicator", idx === i);
+            });
+            index = i;
+        }
+
+        function nextSlide() {
+            index = (index + 1) % images.length;
+            showSlide(index);
+        }
+
+        function prevSlide() {
+            index = (index - 1 + images.length) % images.length;
+            showSlide(index);
+        }
+
+        // Indicators
+        images.forEach((_, i) => {
+            const dot = document.createElement("span");
+            dot.addEventListener("click", () => {
+                clearInterval(interval);
+                showSlide(i);
+            });
+            indicatorsContainer.appendChild(dot);
+        });
+
+        showSlide(index);
+    </script>
+</body>
+</html>
