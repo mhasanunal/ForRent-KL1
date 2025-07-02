@@ -124,18 +124,19 @@
 </head>
 <body>
     <div class="container">
-	<div class="lang-switch" style="display: flex;justify-content: space-between;">
-		<a href="#" onclick="setLang('tr')" title="Sayfayı Türkçe'ye geçir" >
+	
+	<div class="lang-switch" style="position: fixed;z-index: 9999;width: -webkit-fill-available;background: #ffffff8c;width: 8em;padding: 1em;">
+		<a href="#" onclick="event.preventDefault();setLang('tr');" title="Sayfayı Türkçe'ye geçir" style="text-decoration: none;padding-right: 1em;">
 			<img src="img/flag-tr.thumb.png" alt="Sayfayı Türkçe'ye geçir" style="width:50px; height:auto; cursor:pointer;">
 		</a>
-		<a href="#" onclick="setLang('en')" title="Switch page to English" >
+		<a href="#" onclick="event.preventDefault();setLang('en');" title="Switch page to English" style="text-decoration: none;">
 			<img src="img/flag-en.thumb.png" alt="English" style="width:50px; height:auto; cursor:pointer;">
 		</a>
     </div>
     <h1 data-i18n="galleryTitle">Ev Fotoğraf Galerisi</h1>
 	
     <div class="back-link">
-      <a href="index.html"><i class="fas fa-arrow-left"></i> <span data-i18n="backToHome">Ana Sayfaya Dön</span></a>
+      <a id="link" href="index.html"><i class="fas fa-arrow-left"></i> <span data-i18n="backToHome">Ana Sayfaya Dön</span></a>
     </div>
      <div class="filters">
       <button class="active" onclick="filterSelection('all')" data-i18n="filterAll">Tümü</button>
@@ -150,28 +151,28 @@
 
         <div class="gallery">
             <a href="#lightbox-img1" class="gallery-item oda1">
-                <img src="img/oda-1/img-1.png" alt="Oda 1">
+                <img src="img/oda-1/oda1-1.png" alt="Oda 1">
             </a>
-            <a href="#lightbox-img2" class="gallery-item oda1">
-                <img src="img/oda-2/img-1.png" alt="Oda 1">
+            <a href="#lightbox-img2" class="gallery-item oda2">
+                <img src="img/oda-2/oda2-1.png" alt="Oda 2">
             </a>
             <a href="#lightbox-img3" class="gallery-item oda2">
-                <img src="img/oda-2/img-2.png" alt="Oda 2">
+                <img src="img/oda-2/oda2-2.png" alt="Oda 2">
             </a>
             <a href="#lightbox-img4" class="gallery-item salon">
-                <img src="img/oda-2/img-2.png" alt="Salon">
+                <img src="img/salon/salon-1.png" alt="Salon">
             </a>
             <a href="#lightbox-img5" class="gallery-item salon">
-                <img src="img/mutfak/img-1.png" alt="Salon">
+                <img src="img/salon/salon-1.png" alt="Salon">
             </a>
             <a href="#lightbox-img6" class="gallery-item mutfak">
-                <img src="img/wc/img-1.png" alt="Mutfak">
+                <img src="img/mutfak/mutfak-1.png" alt="Mutfak">
             </a>
             <a href="#lightbox-img7" class="gallery-item floor">
                 <img src="img/floorplan.png" alt="floor">
             </a>
             <a href="#lightbox-img8" class="gallery-item banyo">
-                <img src="https://picsum.photos/400/600" alt="Banyo">
+                <img src="img/wc/wc-1.png" alt="Banyo">
             </a>
         </div>
 
@@ -179,15 +180,25 @@
     </div>
 
     <!-- Lightboxes -->
-    <div id="lightbox-img1" class="lightbox"><a href="#" class="lightbox-close">&times;</a><img src="img/oda-1/img-1.png"></div>
-    <div id="lightbox-img2" class="lightbox"><a href="#" class="lightbox-close">&times;</a><img src="img/oda-2/img-1.png"></div>
-    <div id="lightbox-img3" class="lightbox"><a href="#" class="lightbox-close">&times;</a><img src="img/oda-2/img-2.png"></div>
-    <div id="lightbox-img4" class="lightbox"><a href="#" class="lightbox-close">&times;</a><img src="img/oda-2/img-2.png"></div>
-    <div id="lightbox-img5" class="lightbox"><a href="#" class="lightbox-close">&times;</a><img src="img/mutfak/img-1.png"></div>
-    <div id="lightbox-img6" class="lightbox"><a href="#" class="lightbox-close">&times;</a><img src="img/wc/img-1.png"></div>
+    <div id="lightbox-img1" class="lightbox"><a href="#" class="lightbox-close">&times;</a><img src="img/oda-1/oda1-1.png"></div>
+    <div id="lightbox-img2" class="lightbox"><a href="#" class="lightbox-close">&times;</a><img src="img/oda-2/oda2-1.png"></div>
+    <div id="lightbox-img3" class="lightbox"><a href="#" class="lightbox-close">&times;</a><img src="img/oda-2/oda2-2.png"></div>
+    <div id="lightbox-img4" class="lightbox"><a href="#" class="lightbox-close">&times;</a><img src="img/salon/salon-1.png"></div>
+    <div id="lightbox-img5" class="lightbox"><a href="#" class="lightbox-close">&times;</a><img src="img/salon/salon-1.png"></div>
+    <div id="lightbox-img6" class="lightbox"><a href="#" class="lightbox-close">&times;</a><img src="img/mutfak/mutfak-1.png"></div>
     <div id="lightbox-img7" class="lightbox"><a href="#" class="lightbox-close">&times;</a><img src="img/floorplan.png"></div>
-    <div id="lightbox-img8" class="lightbox"><a href="#" class="lightbox-close">&times;</a><img src="img-banyo.jpg"></div>
+    <div id="lightbox-img8" class="lightbox"><a href="#" class="lightbox-close">&times;</a><img src="img/wc/wc-1.png"></div>
 <script>
+
+function getLangFromURL() {
+  const params = new URLSearchParams(window.location.search);
+  const lang = params.get('lang');
+  return (lang === 'en' || lang === 'tr') ? lang : null;
+}
+
+const langFromQuery = getLangFromURL();
+const browserLang = navigator.language.startsWith('en') ? 'en' : 'tr';
+window.curLang = langFromQuery || browserLang;
 
 const translations = {
       tr: {
@@ -217,15 +228,19 @@ const translations = {
         backToHome: "Back to Home"
       }
     };
-
     function setLang(lang) {
-      document.querySelectorAll("[data-i18n]").forEach(el => {
-        const key = el.getAttribute("data-i18n");
-        if (translations[lang][key]) el.innerText = translations[lang][key];
-        if (el.tagName === "TITLE") document.title = translations[lang][key];
-      });
+      const dict = lang === "tr" ? translations["tr"] : translations["en"];
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (dict[key]) el.innerHTML = dict[key];
+        if (el.tagName === 'TITLE') document.title = dict[key];
+      })
+	  document.getElementById('link').href="index.html?lang="+lang;
+	  ;
     }
-setLang('tr');
+	
+
+   
 </script>
     <script>
         function filterSelection(category) {
@@ -242,6 +257,8 @@ setLang('tr');
                 });
             }
         }
+		
+		setLang(window.curLang);
     </script>
 </body>
 </html>
